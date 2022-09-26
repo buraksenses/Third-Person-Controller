@@ -19,7 +19,7 @@ public class ThirdPersonController : MonoBehaviour
 
    private void Update()
    {
-      if (leftJoystick.anan)
+      if (true)
       {
          _animator.SetDirections(_x,_z);
          _x = Mathf.Lerp(_x , Mathf.Round(leftJoystick.Horizontal),_animTransitionSpeed * Time.deltaTime);
