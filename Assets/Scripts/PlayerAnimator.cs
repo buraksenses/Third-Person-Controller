@@ -12,6 +12,8 @@ public class PlayerAnimator : MonoBehaviour
     private static readonly int StrafeRight = Animator.StringToHash("StrafeRight");
     private static readonly int StrafeLeft = Animator.StringToHash("StrafeLeft");
     private static readonly int StrafeBack = Animator.StringToHash("StrafeBack");
+    private static readonly int LeftTurn = Animator.StringToHash("LeftTurn");
+    private static readonly int IsTurning = Animator.StringToHash("isTurning");
 
     private static readonly int iX = Animator.StringToHash("iX");
     private static readonly int iZ = Animator.StringToHash("iZ");
@@ -27,5 +29,10 @@ public class PlayerAnimator : MonoBehaviour
     {
         _animator.SetFloat(iX,x);
         _animator.SetFloat(iZ,z);
+    }
+
+    public void PlayTurnAnimations(float x)
+    {
+        _animator.SetBool(IsTurning, x != 0);
     }
 }
