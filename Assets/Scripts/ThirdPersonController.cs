@@ -12,6 +12,7 @@ public class ThirdPersonController : MonoBehaviour
    public FixedTouchField touchField;
    private PlayerAnimator _playerAnimator;
    private Rigidbody _rigidbody;
+   private SirhotEvents _sirhotEvents;
 
    private Transform _mainCameraTR;
    private Transform _transform;
@@ -25,33 +26,51 @@ public class ThirdPersonController : MonoBehaviour
    private float _cameraAngleY;
    private float _moveSpeed = .01f;
   
-   private readonly Vector3 _angleVector = new Vector3(0, 3, 4);
+   private readonly Vector3 _angleVector = new (0, 3, 4);
    private Vector3 _lookAtObjectPosition;
+
+   
+   private bool _isMoving;
 
 
    private void Awake()
    {
       _playerAnimator = GetComponent<PlayerAnimator>();
-      if (Camera.main != null) _mainCameraTR = Camera.main.transform;
+      _mainCameraTR = Camera.main.transform;
       _transform = this.transform;
       _lookAtObject = _mainCameraTR.GetChild(0);
       _lookAtObjectPosition = _lookAtObject.position;
    }
-   
 
-   private void Update()
+   private void Start()
    {
-      CharacterAnimationOperations();
-      CharacterTransformOperations();
-      CameraOperations();
+      // ==== Event Assignments ====
+      SirhotEvents.sirhotOnUpdate += CharacterAnimationOperations;
+      SirhotEvents.sirhotOnUpdate += CharacterTransformOperations;
+      SirhotEvents.sirhotOnUpdate += CameraOperations;
    }
 
    private void CharacterAnimationOperations()
    {
       //ANIMATOR CONTROLS
       _playerAnimator.SetDirections(_x,_z);
-      _x = Mathf.Lerp(_x , Mathf.Round(leftJoystick.Horizontal),_animTransitionSpeed * Time.deltaTime);
-      _z = Mathf.Lerp(_z, Mathf.Round(leftJoystick.Vertical), _animTransitionSpeed * Time.deltaTime);
+      _x = leftJoystick.Horizontal;
+      _z = leftJoystick.Vertical;
+     
+
+      if (leftJoystick.triggered)
+      {
+         if (_isMoving || !_playerAnimator.CanJumpAgain) return;
+         _playerAnimator.PlayStrafeMovementAnimations();
+         _isMoving = true;
+      }
+
+      else
+      {
+         if (!_isMoving) return;
+         _playerAnimator.PlayIdleAnim();
+         _isMoving = false;
+      }
    }
 
    private void CameraOperations()
@@ -71,7 +90,7 @@ public class ThirdPersonController : MonoBehaviour
       float cameraPosSpeed = .003f;
       _cameraPosY = Mathf.Clamp(_cameraPosY - touchField.TouchDist.y * cameraPosSpeed, 4.5f, 6.5f);
       
-      _playerAnimator.PlayTurnAnimations(touchField.TouchDist.x);
+      
    }
 
    private void CharacterTransformOperations()
