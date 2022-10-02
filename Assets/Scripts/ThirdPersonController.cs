@@ -26,12 +26,11 @@ public class ThirdPersonController : MonoBehaviour
    private float _cameraAngleY;
    private float _moveSpeed = .01f;
   
-   private readonly Vector3 _angleVector = new (0, 3, 4);
+   private readonly Vector3 _angleVector = new (2, 3, 4);
    private Vector3 _lookAtObjectPosition;
 
    
    private bool _isMoving;
-
 
    private void Awake()
    {
@@ -89,8 +88,6 @@ public class ThirdPersonController : MonoBehaviour
 
       float cameraPosSpeed = .003f;
       _cameraPosY = Mathf.Clamp(_cameraPosY - touchField.TouchDist.y * cameraPosSpeed, 4.5f, 6.5f);
-      
-      
    }
 
    private void CharacterTransformOperations()
@@ -107,7 +104,7 @@ public class ThirdPersonController : MonoBehaviour
       
       //CHARACTER'S ROTATION CONTROLS
       var targetRotation = Quaternion.LookRotation(_lookAtObject.position - position);
-      transform1.rotation = Quaternion.Slerp(transform1.rotation, targetRotation, 10f * Time.deltaTime);
-
+      transform1.rotation = Quaternion.Slerp(transform1.rotation, targetRotation, 1f);
+      // TODO: Rotation daha smooth yapılabilir.
    }
 }

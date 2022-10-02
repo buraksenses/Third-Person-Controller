@@ -13,14 +13,17 @@ public class PlayerAnimator : MonoBehaviour
     private static readonly int IsTurning = Animator.StringToHash("isTurning");
     private static readonly int Jump = Animator.StringToHash("Jump");
     private static readonly int PistolIdle = Animator.StringToHash("Pistol Idle");
+    private static readonly int Shoot = Animator.StringToHash("Shoot");
 
     private static readonly int iX = Animator.StringToHash("iX");
     private static readonly int iZ = Animator.StringToHash("iZ");
 
     private float _transitionTime = .25f;
     internal bool CanJumpAgain = true;
+    public bool CanShootAgain = true;
 
     internal float JumpCoolDownTime = 1.7f; // TODO: animation clip length will be used.
+    private bool _isPlayerTurning = false;
 
     private void Awake()
     {
@@ -34,6 +37,7 @@ public class PlayerAnimator : MonoBehaviour
         // ==== Event Assignments ====
         SirhotEvents.sirhotOnJump += PlayJumpAnimation;
         SirhotEvents.sirhotOnDrawPistol += PlayPistolIdleAnim;
+        SirhotEvents.sirhotOnShoot += PlayShootAnimation;
     }
 
     private void PlayJumpAnimation()
@@ -76,7 +80,25 @@ public class PlayerAnimator : MonoBehaviour
 
     public void PlayPistolIdleAnim()
     {
-        animator.CrossFade(PistolIdle,_transitionTime,1);
-        animator.SetLayerWeight(1,1);
+        animator.SetLayerWeight(1,animator.GetLayerWeight(1) == 0 ? 1 : 0);
     }
+
+    public void PlayShootAnimation()
+    {
+        if (!CanShootAgain) return;
+        StartCoroutine(PlayShootAnimationRoutine());
+    }
+
+    private IEnumerator PlayShootAnimationRoutine()
+    {
+        CanShootAgain = false;
+        animator.CrossFade(Shoot,0,1);
+
+        yield return new WaitForSeconds(1.167f);
+        
+        animator.CrossFade(PistolIdle,_transitionTime,1);
+        CanShootAgain = true;
+    }
+
+    
 }

@@ -25,5 +25,10 @@ public class UIManager : MonoBehaviour
         _sirhotEvents.OnDrawPistol();
     }
 
+    public void ShootButtonOnClick()
+    {
+        _sirhotEvents.OnShoot();
+    }
+
     #endregion
 }
