@@ -18,6 +18,8 @@ public class ThirdPersonController : MonoBehaviour
    private Transform _transform;
    private Transform _lookAtObject;
 
+   private Camera _mainCamera;
+
    private float _x;
    private float _z;
    private float _animTransitionSpeed = 10f;
@@ -25,8 +27,11 @@ public class ThirdPersonController : MonoBehaviour
    private float _cameraPosY = 3f;
    private float _cameraAngleY;
    private float _moveSpeed = .01f;
+
+   private float _scopedFOV = 30f;
+   private float _unscopedFOV = 60f;
   
-   private readonly Vector3 _angleVector = new (2, 3, 4);
+   private readonly Vector3 _angleVector = new (0, 3, 4);
    private Vector3 _lookAtObjectPosition;
 
    
@@ -39,6 +44,7 @@ public class ThirdPersonController : MonoBehaviour
       _transform = this.transform;
       _lookAtObject = _mainCameraTR.GetChild(0);
       _lookAtObjectPosition = _lookAtObject.position;
+      _mainCamera = Camera.main;
    }
 
    private void Start()
@@ -47,6 +53,8 @@ public class ThirdPersonController : MonoBehaviour
       SirhotEvents.sirhotOnUpdate += CharacterAnimationOperations;
       SirhotEvents.sirhotOnUpdate += CharacterTransformOperations;
       SirhotEvents.sirhotOnUpdate += CameraOperations;
+      SirhotEvents.sirhotOnDrawPistol += OnDrawPistol;
+      SirhotEvents.sirhotOnPistolDown += OnDrawPistol;
    }
 
    private void CharacterAnimationOperations()
@@ -106,5 +114,11 @@ public class ThirdPersonController : MonoBehaviour
       var targetRotation = Quaternion.LookRotation(_lookAtObject.position - position);
       transform1.rotation = Quaternion.Slerp(transform1.rotation, targetRotation, 1f);
       // TODO: Rotation daha smooth yapılabilir.
+   }
+
+   private void OnDrawPistol()
+   {
+      float cameraFOV = _mainCamera.fieldOfView;
+      _mainCamera.fieldOfView = Mathf.Approximately(_scopedFOV,cameraFOV) ? _unscopedFOV : _scopedFOV;
    }
 }

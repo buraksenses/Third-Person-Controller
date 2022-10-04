@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerAnimator : MonoBehaviour
 {
     [HideInInspector] public Animator animator;
+    private SirhotEvents _sirhotEvents;
 
     private static readonly int Idle = Animator.StringToHash("Idle");
     private static readonly int StrafeMovement = Animator.StringToHash("StrafeMovement");
@@ -28,6 +29,7 @@ public class PlayerAnimator : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        _sirhotEvents = FindObjectOfType<SirhotEvents>();
     }
 
     private void Start()
@@ -37,7 +39,11 @@ public class PlayerAnimator : MonoBehaviour
         // ==== Event Assignments ====
         SirhotEvents.sirhotOnJump += PlayJumpAnimation;
         SirhotEvents.sirhotOnDrawPistol += PlayPistolIdleAnim;
+        SirhotEvents.sirhotOnPistolDown += PlayPistolDownAnim;
         SirhotEvents.sirhotOnShoot += PlayShootAnimation;
+
+        SirhotEvents.sirhotOnJump += OnJump;
+        SirhotEvents.sirhotOnGrounded += OnGrounded;
     }
 
     private void PlayJumpAnimation()
@@ -53,6 +59,7 @@ public class PlayerAnimator : MonoBehaviour
 
         yield return new WaitForSeconds(JumpCoolDownTime);
         
+        _sirhotEvents.OnGrounded();
         animator.CrossFade(Idle,_transitionTime,0);
         CanJumpAgain = true;
     }
@@ -80,7 +87,12 @@ public class PlayerAnimator : MonoBehaviour
 
     public void PlayPistolIdleAnim()
     {
-        animator.SetLayerWeight(1,animator.GetLayerWeight(1) == 0 ? 1 : 0);
+        animator.SetLayerWeight(1,1);
+    }
+
+    public void PlayPistolDownAnim()
+    {
+        animator.SetLayerWeight(1,0);
     }
 
     public void PlayShootAnimation()
@@ -100,5 +112,14 @@ public class PlayerAnimator : MonoBehaviour
         CanShootAgain = true;
     }
 
+    private void OnJump()
+    {
+        animator.SetLayerWeight(1,0);
+    }
+
+    private void OnGrounded()
+    {
+        animator.SetLayerWeight(1,1);
+    }
     
 }

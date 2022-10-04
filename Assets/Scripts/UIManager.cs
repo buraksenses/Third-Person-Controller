@@ -22,7 +22,17 @@ public class UIManager : MonoBehaviour
 
     public void DrawPistolButtonOnClick()
     {
-        _sirhotEvents.OnDrawPistol();
+        if (GameManager.Instance.PistolState == PistolState.Down)
+        {
+            _sirhotEvents.OnDrawPistol();
+            GameManager.Instance.PistolState = PistolState.Drawn;
+        }
+        else
+        {
+            _sirhotEvents.OnPistolDown();
+            GameManager.Instance.PistolState = PistolState.Down;
+        }
+            
     }
 
     public void ShootButtonOnClick()

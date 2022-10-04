@@ -6,7 +6,7 @@ using UnityEngine;
 public class SirhotEvents : MonoBehaviour
 {
     public static event Action sirhotOnUpdate;
-    public static event Action sirhotOnJump, sirhotOnDrawPistol,sirhotOnStrafeMovement,sirhotOnShoot;
+    public static event Action sirhotOnJump, sirhotOnDrawPistol,sirhotOnStrafeMovement,sirhotOnShoot,sirhotOnPistolDown,sirhotOnGrounded;
 
     private void Update()
     {
@@ -31,5 +31,15 @@ public class SirhotEvents : MonoBehaviour
     public void OnShoot()
     {
         sirhotOnShoot?.Invoke();
+    }
+
+    public void OnPistolDown()
+    {
+        sirhotOnPistolDown?.Invoke();
+    }
+
+    public void OnGrounded()
+    {
+        sirhotOnGrounded?.Invoke();
     }
 }
