@@ -21,11 +21,13 @@ public class CrosshairHandler : MonoBehaviour
 
     private void CloseCrosshair()
     {
-        gameObject.SetActive(false);
+        if(GameManager.Instance.PistolState == PistolState.Drawn)
+            gameObject.SetActive(false);
     }
 
     private void OpenCrosshair()
     {
-        gameObject.SetActive(true);
+        if(GameManager.Instance.PistolState == PistolState.Drawn)
+            gameObject.SetActive(true);
     }
 }

@@ -114,12 +114,14 @@ public class PlayerAnimator : MonoBehaviour
 
     private void OnJump()
     {
-        animator.SetLayerWeight(1,0);
+        if(GameManager.Instance.PistolState == PistolState.Drawn)
+            animator.SetLayerWeight(1,0);
     }
 
     private void OnGrounded()
     {
-        animator.SetLayerWeight(1,1);
+        if(GameManager.Instance.PistolState == PistolState.Drawn)
+            animator.SetLayerWeight(1,1);
     }
     
 }
