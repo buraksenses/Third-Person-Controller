@@ -2,9 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CrosshairHandler : MonoBehaviour
 {
+    private Image _crosshair;
     private void Awake()
     {
         SirhotEvents.sirhotOnJump += CloseCrosshair;
@@ -16,18 +18,19 @@ public class CrosshairHandler : MonoBehaviour
 
     private void Start()
     {
-        gameObject.SetActive(false);
+        _crosshair = GetComponent<Image>();
+        _crosshair.enabled = false;
     }
 
     private void CloseCrosshair()
     {
-        if(GameManager.Instance.PistolState == PistolState.Drawn)
-            gameObject.SetActive(false);
+        if (GameManager.Instance.PistolState == PistolState.Down)
+            _crosshair.enabled = false;
     }
 
     private void OpenCrosshair()
     {
-        if(GameManager.Instance.PistolState == PistolState.Drawn)
-            gameObject.SetActive(true);
+        if (GameManager.Instance.PistolState == PistolState.Drawn)
+            _crosshair.enabled = true;
     }
 }

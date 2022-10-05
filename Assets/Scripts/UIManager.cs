@@ -24,13 +24,13 @@ public class UIManager : MonoBehaviour
     {
         if (GameManager.Instance.PistolState == PistolState.Down)
         {
-            _sirhotEvents.OnDrawPistol();
             GameManager.Instance.PistolState = PistolState.Drawn;
+            _sirhotEvents.OnDrawPistol();
         }
         else
         {
-            _sirhotEvents.OnPistolDown();
             GameManager.Instance.PistolState = PistolState.Down;
+            _sirhotEvents.OnPistolDown();
         }
             
     }
