@@ -9,8 +9,8 @@ public class CrosshairHandler : MonoBehaviour
     private Image _crosshair;
     private void Awake()
     {
-        SirhotEvents.sirhotOnJump += CloseCrosshair;
-        SirhotEvents.sirhotOnGrounded += OpenCrosshair;
+        SirhotEvents.sirhotOnJump += CloseCrosshairOnJump;
+        SirhotEvents.sirhotOnGrounded += OpenCrosshairOnGrounded;
         
         SirhotEvents.sirhotOnDrawPistol += OpenCrosshair;
         SirhotEvents.sirhotOnPistolDown += CloseCrosshair;
@@ -31,6 +31,18 @@ public class CrosshairHandler : MonoBehaviour
     private void OpenCrosshair()
     {
         if (GameManager.Instance.PistolState == PistolState.Drawn)
+            _crosshair.enabled = true;
+    }
+
+    private void CloseCrosshairOnJump()
+    {
+        if(GameManager.Instance.PistolState == PistolState.Drawn)
+            _crosshair.enabled = false;
+    }
+
+    private void OpenCrosshairOnGrounded()
+    {
+        if(GameManager.Instance.PistolState == PistolState.Drawn)
             _crosshair.enabled = true;
     }
 }

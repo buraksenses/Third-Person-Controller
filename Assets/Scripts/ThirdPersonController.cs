@@ -2,9 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
-using UniRx;
-using UniRx.Triggers;
 
 public class ThirdPersonController : MonoBehaviour
 {
@@ -28,8 +25,9 @@ public class ThirdPersonController : MonoBehaviour
    private float _cameraAngleY;
    private float _moveSpeed = .01f;
 
-   private float _scopedFOV = 30f;
+   private float _scopedFOV = 50f;
    private float _unscopedFOV = 60f;
+   private float _rotateSensitivity = 30f;
   
    private readonly Vector3 _angleVector = new (0, 3, 4);
    private Vector3 _lookAtObjectPosition;
@@ -61,8 +59,9 @@ public class ThirdPersonController : MonoBehaviour
    {
       //ANIMATOR CONTROLS
       _playerAnimator.SetDirections(_x,_z);
-      _x = leftJoystick.Horizontal;
-      _z = leftJoystick.Vertical;
+
+      _x = Mathf.Lerp(_x, leftJoystick.Horizontal, 2 * Time.deltaTime);
+      _z = Mathf.Lerp(_z, leftJoystick.Vertical, 2 * Time.deltaTime);
      
 
       if (leftJoystick.triggered)
@@ -92,7 +91,7 @@ public class ThirdPersonController : MonoBehaviour
       _cameraAngleY += touchField.TouchDist.x * _cameraAngleSpeed;
       cameraTr.position = position - Quaternion.AngleAxis(_cameraAngleY, Vector3.up) * _angleVector + new Vector3(0,_cameraPosY,0);
       cameraTr.rotation = Quaternion.LookRotation(position + Vector3.up * 2f - cameraTr.position, Vector3.up);
-      lookAtObjectTransform.position = new Vector3(lookAtObjectTransform.position.x,_lookAtObjectPosition.y,lookAtObjectTransform.position.z);
+      lookAtObjectTransform.position = new Vector3(lookAtObjectTransform.position.x ,_lookAtObjectPosition.y,lookAtObjectTransform.position.z);
 
       float cameraPosSpeed = .003f;
       _cameraPosY = Mathf.Clamp(_cameraPosY - touchField.TouchDist.y * cameraPosSpeed, 4.5f, 6.5f);
@@ -112,7 +111,7 @@ public class ThirdPersonController : MonoBehaviour
       
       //CHARACTER'S ROTATION CONTROLS
       var targetRotation = Quaternion.LookRotation(_lookAtObject.position - position);
-      transform1.rotation = Quaternion.Slerp(transform1.rotation, targetRotation, 1f);
+      transform1.rotation = Quaternion.Slerp(transform1.rotation, targetRotation, Time.deltaTime * _rotateSensitivity);
       // TODO: Rotation daha smooth yapılabilir.
    }
 
