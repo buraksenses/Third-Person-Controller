@@ -9,11 +9,11 @@ public class CrosshairHandler : MonoBehaviour
     private Image _crosshair;
     private void Awake()
     {
-        SirhotEvents.sirhotOnJump += CloseCrosshairOnJump;
-        SirhotEvents.sirhotOnGrounded += OpenCrosshairOnGrounded;
+        EventManager.sirhotOnJump += CloseCrosshairOnJump;
+        EventManager.sirhotOnGrounded += OpenCrosshairOnGrounded;
         
-        SirhotEvents.sirhotOnDrawPistol += OpenCrosshair;
-        SirhotEvents.sirhotOnPistolDown += CloseCrosshair;
+        EventManager.sirhotOnDrawPistol += OpenCrosshair;
+        EventManager.sirhotOnPistolDown += CloseCrosshair;
     }
 
     private void Start()
@@ -24,25 +24,25 @@ public class CrosshairHandler : MonoBehaviour
 
     private void CloseCrosshair()
     {
-        if (GameManager.Instance.PistolState == PistolState.Down)
+        if (GameHandler.Instance.PistolState == PistolState.Down)
             _crosshair.enabled = false;
     }
 
     private void OpenCrosshair()
     {
-        if (GameManager.Instance.PistolState == PistolState.Drawn)
+        if (GameHandler.Instance.PistolState == PistolState.Drawn)
             _crosshair.enabled = true;
     }
 
     private void CloseCrosshairOnJump()
     {
-        if(GameManager.Instance.PistolState == PistolState.Drawn)
+        if(GameHandler.Instance.PistolState == PistolState.Drawn)
             _crosshair.enabled = false;
     }
 
     private void OpenCrosshairOnGrounded()
     {
-        if(GameManager.Instance.PistolState == PistolState.Drawn)
+        if(GameHandler.Instance.PistolState == PistolState.Drawn)
             _crosshair.enabled = true;
     }
 }

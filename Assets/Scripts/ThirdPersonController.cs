@@ -9,7 +9,7 @@ public class ThirdPersonController : MonoBehaviour
    public FixedTouchField touchField;
    private PlayerAnimator _playerAnimator;
    private Rigidbody _rigidbody;
-   private SirhotEvents _sirhotEvents;
+   private EventManager _sirhotEvents;
 
    private Transform _mainCameraTR;
    private Transform _transform;
@@ -48,11 +48,11 @@ public class ThirdPersonController : MonoBehaviour
    private void Start()
    {
       // ==== Event Assignments ====
-      SirhotEvents.sirhotOnUpdate += CharacterAnimationOperations;
-      SirhotEvents.sirhotOnUpdate += CharacterTransformOperations;
-      SirhotEvents.sirhotOnUpdate += CameraOperations;
-      SirhotEvents.sirhotOnDrawPistol += OnDrawPistol;
-      SirhotEvents.sirhotOnPistolDown += OnDrawPistol;
+      EventManager.sirhotOnUpdate += CharacterAnimationOperations;
+      EventManager.sirhotOnUpdate += CharacterTransformOperations;
+      EventManager.sirhotOnUpdate += CameraOperations;
+      EventManager.sirhotOnDrawPistol += OnDrawPistol;
+      EventManager.sirhotOnPistolDown += OnDrawPistol;
    }
 
    private void CharacterAnimationOperations()

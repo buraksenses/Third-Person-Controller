@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class UIManager : MonoBehaviour
+public class UIHandler : MonoBehaviour
 {
-    private SirhotEvents _sirhotEvents;
+    private EventManager _sirhotEvents;
 
     private void Awake()
     {
-        _sirhotEvents = FindObjectOfType<SirhotEvents>();
+        _sirhotEvents = FindObjectOfType<EventManager>();
     }
 
     #region Button Methods
@@ -22,14 +22,14 @@ public class UIManager : MonoBehaviour
 
     public void DrawPistolButtonOnClick()
     {
-        if (GameManager.Instance.PistolState == PistolState.Down)
+        if (GameHandler.Instance.PistolState == PistolState.Down)
         {
-            GameManager.Instance.PistolState = PistolState.Drawn;
+            GameHandler.Instance.PistolState = PistolState.Drawn;
             _sirhotEvents.OnDrawPistol();
         }
         else
         {
-            GameManager.Instance.PistolState = PistolState.Down;
+            GameHandler.Instance.PistolState = PistolState.Down;
             _sirhotEvents.OnPistolDown();
         }
             

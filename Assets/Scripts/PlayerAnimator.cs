@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerAnimator : MonoBehaviour
 {
     [HideInInspector] public Animator animator;
-    private SirhotEvents _sirhotEvents;
+    private EventManager _sirhotEvents;
 
     private static readonly int Idle = Animator.StringToHash("Idle");
     private static readonly int StrafeMovement = Animator.StringToHash("StrafeMovement");
@@ -29,7 +29,7 @@ public class PlayerAnimator : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        _sirhotEvents = FindObjectOfType<SirhotEvents>();
+        _sirhotEvents = FindObjectOfType<EventManager>();
     }
 
     private void Start()
@@ -37,13 +37,13 @@ public class PlayerAnimator : MonoBehaviour
         animator.CrossFade(Idle,0,0);
 
         // ==== Event Assignments ====
-        SirhotEvents.sirhotOnJump += PlayJumpAnimation;
-        SirhotEvents.sirhotOnDrawPistol += PlayPistolIdleAnim;
-        SirhotEvents.sirhotOnPistolDown += PlayPistolDownAnim;
-        SirhotEvents.sirhotOnShoot += PlayShootAnimation;
+        EventManager.sirhotOnJump += PlayJumpAnimation;
+        EventManager.sirhotOnDrawPistol += PlayPistolIdleAnim;
+        EventManager.sirhotOnPistolDown += PlayPistolDownAnim;
+        EventManager.sirhotOnShoot += PlayShootAnimation;
 
-        SirhotEvents.sirhotOnJump += OnJump;
-        SirhotEvents.sirhotOnGrounded += OnGrounded;
+        EventManager.sirhotOnJump += OnJump;
+        EventManager.sirhotOnGrounded += OnGrounded;
     }
 
     private void PlayJumpAnimation()
@@ -114,13 +114,13 @@ public class PlayerAnimator : MonoBehaviour
 
     private void OnJump()
     {
-        if(GameManager.Instance.PistolState == PistolState.Drawn)
+        if(GameHandler.Instance.PistolState == PistolState.Drawn)
             animator.SetLayerWeight(1,0);
     }
 
     private void OnGrounded()
     {
-        if(GameManager.Instance.PistolState == PistolState.Drawn)
+        if(GameHandler.Instance.PistolState == PistolState.Drawn)
             animator.SetLayerWeight(1,1);
     }
     

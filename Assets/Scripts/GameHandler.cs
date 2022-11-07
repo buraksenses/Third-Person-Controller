@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameHandler : MonoBehaviour
 {
-    public static GameManager Instance;
+    public static GameHandler Instance;
     
     public PistolState PistolState;
 

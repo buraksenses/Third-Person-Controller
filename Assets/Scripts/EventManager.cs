@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SirhotEvents : MonoBehaviour
+public class EventManager : MonoBehaviour
 {
     public static event Action sirhotOnUpdate;
     public static event Action sirhotOnJump, sirhotOnDrawPistol,sirhotOnStrafeMovement,sirhotOnShoot,sirhotOnPistolDown,sirhotOnGrounded;
